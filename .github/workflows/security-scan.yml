@@ -1,0 +1,18 @@
+name: Security Scan
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+    push:
+        branches: [ main ]
+        paths-ignore: [ '.github/**', 'doc/**', 'docs/**', 'tools/**', 'catalog-info.yaml', 'README.md' ]
+    workflow_dispatch:
+
+jobs:
+    security-scan:
+        uses: unzercorp/unzer-tech-toolbox/.github/workflows/security-scan.yaml@main
+        secrets:
+            CX_CLIENT_ID: ${{ secrets.CX_P3_CLIENT_ID }}
+            CX_CLIENT_SECRET: ${{ secrets.CX_P3_CLIENT_SECRET }}
+        additional_params:  --threshold "iac-high=5;iac-medium=10;sast-high=5;sast-medium=10;sca-high=10" --sast-filter '!tools/**,!docs/**,!**/src/test/**/*' --iac-security-filter '!tools/**,!docs/**,!**/src/test/**/*' --sca-filter '!tools/**,!docs/**,!**/src/test/**/*'
