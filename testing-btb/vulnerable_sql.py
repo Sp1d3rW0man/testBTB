@@ -10,3 +10,5 @@ def get_user(username):
 # Simulate user input
 user_input = "admin' OR '1'='1"
 print(get_user(user_input))
+
+#password=something
